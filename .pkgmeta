@@ -1,0 +1,9 @@
+ignore:
+    - resources/logo.png
+    - README.md
+    - LICENSE
+    - deploy.sh
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
