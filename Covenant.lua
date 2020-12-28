@@ -147,8 +147,9 @@ end
 
 local function init()
     local isDeteilsLoaded = _G._detalhes ~= nil
+    local isSkadaLoaded = _G.Skada ~= nil
 
-    if isDeteilsLoaded then
+    if isDeteilsLoaded or isSkadaLoaded then
         local covenantID = C_Covenants.GetActiveCovenantID()
         local playerName = UnitName("player")
 
@@ -170,6 +171,121 @@ local function addCovenantForPlayer(covenantID, playerName)
         registerCombatEvent()
         --print("|CFF00FF00Add new character covenant:|r "..sourceName.." "..covenantID)
     end
+end
+
+local function getCovenantIcon(covenantID)
+    if covenantID > 0 and covenantID < 5 then
+        local covenantMap = {
+            [1] = "kyrian",
+            [2] = "venthyr",
+            [3] = "night_fae",
+            [4] = "necrolord",
+        }
+
+        return "|T".."Interface\\AddOns\\Details_Covenants\\resources\\"..covenantMap[covenantID]..".tga:"..DCovenant["iconSize"]..":"..DCovenant["iconSize"].."|t"
+    end
+
+    return ""
+end
+
+-- Replace NickTag implementation
+local function replaceDetailsImplmentation()
+    if _G.NickTag and _G._detalhes then
+        _G._detalhes.GetNickname = function(self, playerName, default, silent)
+            local covenantID = DetailsCovenant.covenants[playerName]
+            local covenantEmojiName = ""
+
+            if default == false and covenantID then
+                covenantEmojiName = getCovenantIcon(covenantID).." "
+            end
+
+            if (not silent) then
+                assert (type (playerName) == "string", "NickTag 'GetNickname' expects a string or string on #1 argument.")
+            end
+            
+            local _table = NickTag:GetNicknameTable (playerName)
+            if (not _table) then
+                if (_G._detalhes.remove_realm_from_name) then
+                    playerName = playerName:gsub (("%-.*"), "")
+                end
+
+                return covenantEmojiName..playerName or nil
+            end
+            
+            local nickName = _table[1]
+            if nickName then
+                if TemniUgolok_SetEmojiToDetails then
+                    return covenantEmojiName..TemniUgolok_SetEmojiToDetails(_table[1])
+                else 
+                    return covenantEmojiName.._table[1]
+                end 
+            else
+                return default or nil
+            end
+        end
+    end
+end
+
+-- Skada
+local function replaceSkadaImplmentation()
+    if _G.Skada then
+        _G.Skada.get_player = function(self, set, playerid, playername)
+            local covenantID = DetailsCovenant.covenants[playername]
+            local covenantEmojiName = ""
+
+            if covenantID then
+                covenantEmojiName = getCovenantIcon(covenantID).." "
+            end
+
+            -- Add player to set if it does not exist.
+            local player = Skada:find_player(set, playerid)
+
+            if not player then
+                -- If we do not supply a playername (often the case in submodes), we can not create an entry.
+                if not playername then
+                    return
+                end
+
+                local _, playerClass = UnitClass(playername)
+                local playerRole = UnitGroupRolesAssigned(playername)
+                player = {id = playerid, class = playerClass, role = playerRole, name = playername, first = time(), ["time"] = 0}
+
+                -- Tell each mode to apply its needed attributes.
+                for i, mode in ipairs(_G.Skada:GetModes(nil)) do
+                    if mode.AddPlayerAttributes ~= nil then
+                        mode:AddPlayerAttributes(player, set)
+                    end
+                end
+
+                -- Strip realm name
+                -- This is done after module processing due to cross-realm names messing with modules (death log for example, which needs to do UnitHealthMax on the playername).
+                local player_name, realm = string.split("-", playername, 2)
+                player.name = covenantEmojiName..(player_name or playername)
+
+                tinsert(set.players, player)
+            end
+
+            if player.name == UNKNOWN and playername ~= UNKNOWN then -- fixup players created before we had their info
+                local player_name, realm = string.split("-", playername, 2)
+                player.name = covenantEmojiName..(player_name or playername)
+                local _, playerClass = UnitClass(playername)
+                local playerRole = UnitGroupRolesAssigned(playername)
+                player.class = playerClass
+                player.role = playerRole
+            end
+
+
+            -- The total set clears out first and last timestamps.
+            if not player.first then
+                player.first = time()
+            end
+
+            -- Mark now as the last time player did something worthwhile.
+            player.last = time()
+            changed = true
+            return player
+        end
+    end  
 end
 
 local function eventHandler(self, event, ...)
@@ -196,63 +312,13 @@ local function eventHandler(self, event, ...)
         updateGroupRoster()
     elseif event == "PLAYER_ENTERING_WORLD" then
         init()
+        replaceDetailsImplmentation()
+        replaceSkadaImplmentation()
         frame:UnregisterEvent("PLAYER_ENTERING_WORLD");
     end
 end
 
 frame:SetScript("OnEvent", eventHandler);
-
-
-local function getCovenantIcon(covenantID)
-    if covenantID > 0 and covenantID < 5 then
-        local covenantMap = {
-            [1] = "kyrian",
-            [2] = "venthyr",
-            [3] = "night_fae",
-            [4] = "necrolord",
-        }
-
-        return "|T".."Interface\\AddOns\\Details_Covenants\\resources\\"..covenantMap[covenantID]..".tga:"..DCovenant["iconSize"]..":"..DCovenant["iconSize"].."|t"
-    end
-
-    return ""
-end
-
--- Replace NickTag implementation
-if _G.NickTag and _G._detalhes then
-    _G._detalhes.GetNickname = function(self, playerName, default, silent)
-        local covenantID = DetailsCovenant.covenants[playerName]
-        local covenantEmojiName = ""
-
-        if default == false and covenantID then
-            covenantEmojiName = getCovenantIcon(covenantID).." "
-        end
-
-        if (not silent) then
-            assert (type (playerName) == "string", "NickTag 'GetNickname' expects a string or string on #1 argument.")
-        end
-        
-        local _table = NickTag:GetNicknameTable (playerName)
-        if (not _table) then
-            if (_G._detalhes.remove_realm_from_name) then
-                playerName = playerName:gsub (("%-.*"), "")
-            end
-
-            return covenantEmojiName..playerName or nil
-        end
-        
-        local nickName = _table[1]
-        if nickName then
-            if TemniUgolok_SetEmojiToDetails then
-                return covenantEmojiName..TemniUgolok_SetEmojiToDetails(_table[1])
-            else 
-                return covenantEmojiName.._table[1]
-            end 
-        else
-            return default or nil
-        end
-    end
-end
 
 -- Command line tools 
 SLASH_DETAILSCOVENANT1, SLASH_DETAILSCOVENANT2 = '/dc', '/dcovenants';

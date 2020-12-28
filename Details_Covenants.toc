@@ -1,7 +1,6 @@
 ## Interface: 90002
 ## Title: Details!: Covenants
 ## Notes: Show covenant icon
-## RequiredDeps: Details
 ## Author: Toenak
 ## Version: 0.0.1
 ## X-License: MIT
