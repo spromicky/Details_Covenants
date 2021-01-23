@@ -1,5 +1,6 @@
 ignore:
     - resources/logo.png
+    - resources/screenshot.png
     - README.md
     - LICENSE
     - deploy.sh
