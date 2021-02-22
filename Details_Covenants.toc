@@ -2,7 +2,7 @@
 ## Title: Details!|Skada Covenants
 ## Notes: Show covenant icon
 ## Author: Toenak
-## Version: 0.0.1
+## Version: 0.0.3
 ## X-License: MIT
 ## X-Curse-Project-ID: 431558
 ## SavedVariablesPerCharacter: DCovenant
