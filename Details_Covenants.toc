@@ -7,4 +7,10 @@
 ## X-Curse-Project-ID: 431558
 ## SavedVariablesPerCharacter: DCovenant
 
-Covenant.lua
+Utils.lua
+SpellIDs.lua
+Oribos.lua
+Details.lua
+Skada.lua
+Core.lua
+Commands.lua
