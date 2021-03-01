@@ -3,6 +3,7 @@ local _, dc = ...
 dc.oribos = {}
 
 local oribos = dc.oribos
+local isEmpty = true
 oribos.emptyCovenants = {}
 oribos.covenants = {}
 
@@ -42,8 +43,23 @@ function oribos:addCovenantForPlayer(covenantID, playerName)
     if covenantID then 
         oribos.covenants[playerName] = covenantID
         oribos.emptyCovenants[playerName] = nil
-        print("|CFF00FF00Add new character covenant:|r "..playerName.." "..covenantID)
     end
+end
+
+function oribos:sendCovenantInfo(playerName)
+    if playerName and oribos.covenants[playerName] then 
+        local message = playerName..":"..oribos.covenants[playerName]
+        C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "PARTY")
+        C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "RAID")
+    end 
+end
+
+function oribos:hasPlayerWithEmptyCovenant()
+    return not dc.utils:isEmpty(oribos.emptyCovenants)
+end
+
+function oribos:isCovenantsEmpty()
+    return isEmpty
 end
 
 

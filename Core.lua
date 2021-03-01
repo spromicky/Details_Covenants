@@ -1,40 +1,43 @@
 local _, dc = ...
 
+dc.addonPrefix = "DCOribos"
 DCovenant = {
     ["iconSize"] = 16,
 }
+
+
+local playerName = UnitName("player")
+local realmName = ""
 
 local frame = CreateFrame("FRAME", "DetailsCovenantFrame");
 frame:RegisterEvent("PLAYER_ENTERING_WORLD");
 
 local function registerCombatEvent()
-    if dc.utils:isEmpty(dc.oribos.emptyCovenants) then 
-        frame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-    else
+    if dc.oribos:hasPlayerWithEmptyCovenant() then 
         frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
         for key, _ in pairs(dc.oribos.emptyCovenants) do
             print("|CFFFF0000Still not exists:|r "..key)
         end
+    else
+        frame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
     end
 end
 
 local function updateGroupRoster()
     dc.oribos:fillCovenants()
+    dc.oribos:sendCovenantInfo(playerName)
     registerCombatEvent()
 end
 
 local function init()
-    local isDeteilsLoaded = _G._detalhes ~= nil
-    local isSkadaLoaded = _G.Skada ~= nil
+    realmName = GetNormalizedRealmName()
     dc.oribos:addCovenantForPlayer(C_Covenants.GetActiveCovenantID(), UnitName("player"))
 
-    if isDeteilsLoaded or isSkadaLoaded then
-        frame:RegisterEvent("GROUP_ROSTER_UPDATE");
-        updateGroupRoster()
-    else
-        frame:UnregisterEvent("GROUP_ROSTER_UPDATE");
-        frame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-    end
+    frame:RegisterEvent("GROUP_ROSTER_UPDATE");
+    frame:RegisterEvent("CHAT_MSG_ADDON")
+    C_ChatInfo.RegisterAddonMessagePrefix(dc.addonPrefix)
+
+    updateGroupRoster()
 end
 
 local function eventHandler(self, event, ...)
@@ -42,7 +45,7 @@ local function eventHandler(self, event, ...)
         print("|CFF00FFFFTriggered|r")
         local _, subevent, _, sourceGUID, sourceName = CombatLogGetCurrentEventInfo()
 
-        if not dc.utils:isEmpty(dc.oribos.emptyCovenants) and dc.oribos.emptyCovenants[sourceName] then
+        if dc.oribos:hasPlayerWithEmptyCovenant() and dc.oribos.emptyCovenants[sourceName] then
             if subevent == "SPELL_CAST_SUCCESS" then
                 local _, englishClass = GetPlayerInfoByGUID(sourceGUID)
                 local classAbilityMap = dc.spellMaps.abilityMap[englishClass]
@@ -60,6 +63,21 @@ local function eventHandler(self, event, ...)
         end
     elseif event == "GROUP_ROSTER_UPDATE" then
         updateGroupRoster()
+    elseif event == "CHAT_MSG_ADDON" then
+        local prefix, messageText, _, sender = ...
+
+        if prefix == dc.addonPrefix then
+            if dc.oribos:hasPlayerWithEmptyCovenant() then
+                local senderName, senderRealm = dc.utils:split(sender, '-')
+                if senderName ~= playerName then
+                    local name, covenantID = dc.utils:split(messageText, ':')
+                    if realmName ~= senderRealm then
+                        name = name.."-"..senderRealm
+                    end
+                    dc.oribos:addCovenantForPlayer(tonumber(covenantID), name)
+                end
+            end
+        end
     elseif event == "PLAYER_ENTERING_WORLD" then
         init()
         dc:replaceDetailsImplmentation()

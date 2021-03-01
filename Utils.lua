@@ -16,3 +16,11 @@ function utils:isNumeric(x)
     end
     return false
 end
+
+function utils:split(s, delimiter)
+    result = {};
+    for match in (s..delimiter):gmatch("(.-)"..delimiter) do
+        table.insert(result, match);
+    end
+    return result[1], result[2]
+end
