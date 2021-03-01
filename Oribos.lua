@@ -36,14 +36,14 @@ end
 
 function oribos:addCovenantForPlayer(covenantID, playerName, playerClass)
     if covenantID then 
-        if DCovenant["chat"] == true and not oribos.covenants[playerName] then 
-            if playerName ~= UnitName("player") then
-                isEmpty = false
-            end
+        if playerName ~= UnitName("player") then
+            isEmpty = false
 
-            local coloredName = "|CFFe5a472Details_Covenants|r"
-            local _, _, _, classColor = GetClassColor(playerClass)
-            print(coloredName.." covenant defined: "..oribos:getCovenantIcon(covenantID).." |C"..classColor..playerName.."|r")
+            if DCovenant["chat"] == true and not oribos.covenants[playerName] then 
+                local coloredName = "|CFFe5a472Details_Covenants|r"
+                local _, _, _, classColor = GetClassColor(playerClass)
+                print(coloredName.." covenant defined: "..oribos:getCovenantIcon(covenantID).." |C"..classColor..playerName.."|r")
+            end
         end
 
         local playerData = {}
