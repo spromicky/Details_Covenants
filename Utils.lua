@@ -22,5 +22,15 @@ function utils:split(s, delimiter)
     for match in (s..delimiter):gmatch("(.-)"..delimiter) do
         table.insert(result, match);
     end
+    return result
+end
+
+function utils:splitName(name)
+    local result = utils:split(name, '-')
     return result[1], result[2]
+end 
+
+function utils:splitMessage(msg)
+    local result = utils:split(msg, ':')
+    return result[1], result[2], result[3]
 end

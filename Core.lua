@@ -38,8 +38,9 @@ local function updateGroupRoster()
 end
 
 local function init()
+    local _, playerClass = UnitClass("player")
     realmName = GetNormalizedRealmName()
-    dc.oribos:addCovenantForPlayer(C_Covenants.GetActiveCovenantID(), UnitName("player"))
+    dc.oribos:addCovenantForPlayer(C_Covenants.GetActiveCovenantID(), UnitName("player"), playerClass)
 
     frame:RegisterEvent("GROUP_ROSTER_UPDATE");
     frame:RegisterEvent("CHAT_MSG_ADDON")
@@ -63,8 +64,8 @@ local function eventHandler(self, event, ...)
                     local covenantIDByAbility = classAbilityMap[spellID]
                     local covenantIDByUtility = dc.spellMaps.utilityMap[spellID]
 
-                    dc.oribos:addCovenantForPlayer(covenantIDByAbility, sourceName)
-                    dc.oribos:addCovenantForPlayer(covenantIDByUtility, sourceName)
+                    dc.oribos:addCovenantForPlayer(covenantIDByAbility, sourceName, englishClass)
+                    dc.oribos:addCovenantForPlayer(covenantIDByUtility, sourceName, englishClass)
                     registerCombatEvent()
                 end
             end
@@ -78,13 +79,14 @@ local function eventHandler(self, event, ...)
             if messageText == askMessage then
                 dc.oribos:sendCovenantInfo(playerName)
             elseif dc.oribos:hasPlayerWithEmptyCovenant() then
-                local senderName, senderRealm = dc.utils:split(sender, '-')
+                local senderName, senderRealm = dc.utils:splitName(sender)
                 if senderName ~= playerName then
-                    local name, covenantID = dc.utils:split(messageText, ':')
+                    local name, covenantID, playerClass = dc.utils:splitMessage(messageText)
                     if realmName ~= senderRealm then
                         name = name.."-"..senderRealm
                     end
-                    dc.oribos:addCovenantForPlayer(tonumber(covenantID), name)
+
+                    dc.oribos:addCovenantForPlayer(tonumber(covenantID), name, playerClass)
                 end
             end
         end

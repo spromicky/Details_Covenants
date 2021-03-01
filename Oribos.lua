@@ -29,26 +29,26 @@ function oribos:fillCovenants()
     for groupindex = 1, numGroupMembers do
         local name = GetRaidRosterInfo(groupindex)
 
-        if name then
-            local covenantID = oribos.covenants[name]
-            if not covenantID then
-                print("|CFFFF0000Not exists:|r "..name)
-                oribos.emptyCovenants[name] = 0
-            end
+        if name and not oribos.covenants[name] then
+            print("|CFFFF0000Not exists:|r "..name)
+            oribos.emptyCovenants[name] = 0
         end
     end
 end
 
-function oribos:addCovenantForPlayer(covenantID, playerName)
+function oribos:addCovenantForPlayer(covenantID, playerName, playerClass)
     if covenantID then 
-        oribos.covenants[playerName] = covenantID
+        local playerData = {}
+        playerData.covenantID = covenantID
+        playerData.class = playerClass
+        oribos.covenants[playerName] = playerData
         oribos.emptyCovenants[playerName] = nil
     end
 end
 
 function oribos:sendCovenantInfo(playerName)
     if playerName and oribos.covenants[playerName] then 
-        local message = playerName..":"..oribos.covenants[playerName]
+        local message = playerName..":"..oribos.covenants[playerName].covenantID..":"..oribos.covenants[playerName].class
         C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "PARTY")
         C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "RAID")
     end 
@@ -63,8 +63,9 @@ function oribos:isCovenantsEmpty()
 end
 
 function oribos:log()
-    for key, id in pairs(oribos.covenants) do
-        print(key.." "..oribos:getCovenantIcon(id))
+    for key, data in pairs(oribos.covenants) do
+        local _, _, _, classColor = GetClassColor(data.class)
+        print("|C"..classColor..key.."|r "..oribos:getCovenantIcon(data.covenantID))
     end
 end
 
@@ -74,7 +75,7 @@ _G.Oribos = {}
 local publicOribos = _G.Oribos
 
 function publicOribos:getCovenantIconForPlayer(playerName)
-    local covenantID = oribos.covenants[playerName]
+    local covenantID = oribos.covenants[playerName].covenantID
 
     if covenantID then
         return oribos:getCovenantIcon(covenantID)
