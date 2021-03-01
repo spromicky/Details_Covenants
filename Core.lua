@@ -5,6 +5,8 @@ DCovenant = {
     ["iconSize"] = 16,
 }
 
+local askMessage = "ASK"
+local isAsked = false
 
 local playerName = UnitName("player")
 local realmName = ""
@@ -26,6 +28,12 @@ end
 local function updateGroupRoster()
     dc.oribos:fillCovenants()
     dc.oribos:sendCovenantInfo(playerName)
+    if not isAsked and dc.oribos:isCovenantsEmpty() then
+        isAsked = true
+        C_ChatInfo.SendAddonMessage(dc.addonPrefix, askMessage, "PARTY")
+        C_ChatInfo.SendAddonMessage(dc.addonPrefix, askMessage, "RAID")
+    end
+
     registerCombatEvent()
 end
 
@@ -67,7 +75,9 @@ local function eventHandler(self, event, ...)
         local prefix, messageText, _, sender = ...
 
         if prefix == dc.addonPrefix then
-            if dc.oribos:hasPlayerWithEmptyCovenant() then
+            if messageText == askMessage then
+                dc.oribos:sendCovenantInfo(playerName)
+            elseif dc.oribos:hasPlayerWithEmptyCovenant() then
                 local senderName, senderRealm = dc.utils:split(sender, '-')
                 if senderName ~= playerName then
                     local name, covenantID = dc.utils:split(messageText, ':')
