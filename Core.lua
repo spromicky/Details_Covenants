@@ -26,6 +26,7 @@ end
 local function init()
     local isDeteilsLoaded = _G._detalhes ~= nil
     local isSkadaLoaded = _G.Skada ~= nil
+    dc.oribos:addCovenantForPlayer(C_Covenants.GetActiveCovenantID(), UnitName("player"))
 
     if isDeteilsLoaded or isSkadaLoaded then
         frame:RegisterEvent("GROUP_ROSTER_UPDATE");

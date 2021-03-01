@@ -4,10 +4,7 @@ dc.oribos = {}
 
 local oribos = dc.oribos
 oribos.emptyCovenants = {}
-
-local covenantID = C_Covenants.GetActiveCovenantID()
-local playerName = UnitName("player")
-oribos.covenants = { [playerName] = covenantID }
+oribos.covenants = {}
 
 function oribos:getCovenantIcon(covenantID)
     if covenantID > 0 and covenantID < 5 then
