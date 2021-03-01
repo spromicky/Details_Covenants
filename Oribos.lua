@@ -25,12 +25,10 @@ end
 function oribos:fillCovenants()
     oribos.emptyCovenants = {}
     local numGroupMembers = GetNumGroupMembers()
-    print("|CFFFFFF00Numbers:|r "..numGroupMembers)
     for groupindex = 1, numGroupMembers do
         local name = GetRaidRosterInfo(groupindex)
 
         if name and not oribos.covenants[name] then
-            print("|CFFFF0000Not exists:|r "..name)
             oribos.emptyCovenants[name] = 0
         end
     end

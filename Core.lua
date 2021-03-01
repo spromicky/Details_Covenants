@@ -3,6 +3,7 @@ local _, dc = ...
 dc.addonPrefix = "DCOribos"
 DCovenant = {
     ["iconSize"] = 16,
+    ["chat"] = true,
 }
 
 local askMessage = "ASK"
@@ -17,9 +18,6 @@ frame:RegisterEvent("PLAYER_ENTERING_WORLD");
 local function registerCombatEvent()
     if dc.oribos:hasPlayerWithEmptyCovenant() then 
         frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-        for key, _ in pairs(dc.oribos.emptyCovenants) do
-            print("|CFFFF0000Still not exists:|r "..key)
-        end
     else
         frame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
     end
@@ -28,6 +26,7 @@ end
 local function updateGroupRoster()
     dc.oribos:fillCovenants()
     dc.oribos:sendCovenantInfo(playerName)
+
     if not isAsked and dc.oribos:isCovenantsEmpty() then
         isAsked = true
         C_ChatInfo.SendAddonMessage(dc.addonPrefix, askMessage, "PARTY")
@@ -51,7 +50,6 @@ end
 
 local function eventHandler(self, event, ...)
     if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-        print("|CFF00FFFFTriggered|r")
         local _, subevent, _, sourceGUID, sourceName = CombatLogGetCurrentEventInfo()
 
         if dc.oribos:hasPlayerWithEmptyCovenant() and dc.oribos.emptyCovenants[sourceName] then
@@ -82,6 +80,7 @@ local function eventHandler(self, event, ...)
                 local senderName, senderRealm = dc.utils:splitName(sender)
                 if senderName ~= playerName then
                     local name, covenantID, playerClass = dc.utils:splitMessage(messageText)
+
                     if realmName ~= senderRealm then
                         name = name.."-"..senderRealm
                     end
