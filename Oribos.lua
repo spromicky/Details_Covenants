@@ -62,6 +62,12 @@ function oribos:isCovenantsEmpty()
     return isEmpty
 end
 
+function oribos:log()
+    for key, id in pairs(oribos.covenants) do
+        print(key.." "..oribos:getCovenantIcon(id))
+    end
+end
+
 
 -- Public 
 _G.Oribos = {}

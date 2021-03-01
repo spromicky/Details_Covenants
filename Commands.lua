@@ -10,7 +10,9 @@ local function commandLineHandler(msg, editBox)
         else
             print("Please enter value between 10 and 48") 
         end 
-    else
+    elseif msg == "log" then
+        dc.oribos:log()
+    else 
         print("Details! Covenant icon size: "..DCovenant["iconSize"])
     end
 end
