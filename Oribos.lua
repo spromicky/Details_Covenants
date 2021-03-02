@@ -103,10 +103,10 @@ _G.Oribos = {}
 local publicOribos = _G.Oribos
 
 function publicOribos:getCovenantIconForPlayer(playerName)
-    local covenantID = oribos.covenants[playerName].covenantID
+    local covenantData = oribos.covenants[playerName]
 
-    if covenantID then
-        return oribos:getCovenantIcon(covenantID)
+    if covenantData and covenantData.covenantID then
+        return oribos:getCovenantIcon(covenantData.covenantID)
     else
         return ""
     end 
