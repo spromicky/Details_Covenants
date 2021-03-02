@@ -5,7 +5,7 @@ SLASH_DETAILSCOVENANT1, SLASH_DETAILSCOVENANT2 = '/dc', '/dcovenants';
 local function commandLineHandler(msg, editBox)
     if string.match(msg, "icon ") then
         print(msg)
-        local _, numberValue = dc.utils:splitIconSizeCommand(msg)
+        local _, numberValue = dc.utils:splitCommand(msg)
         if dc.utils:isNumeric(numberValue) then 
             local size = tonumber(numberValue)
             if size > 10 and size < 48 then 
