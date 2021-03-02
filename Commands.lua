@@ -23,18 +23,20 @@ local function commandLineHandler(msg, editBox)
     elseif msg == "chat off" then
         DCovenant["chat"] = false
         print(coloredName.." chat logs is |CFFd77c7aoff|r")
-    elseif msg == "log" then
+    elseif msg == "log all" then
         dc.oribos:log()
+    elseif msg == "log group" then
+        dc.oribos:logParty()
     else 
         local coloredCommand = "  |CFFc0a7c7/dc|r |CFFf3ce87"
         local currentChatOption = ""
 
-        if DCovenant[chat] == true then
+        if DCovenant["chat"] == true then
             currentChatOption = "|CFF9fd78aon|r"
         else
             currentChatOption = "|CFFd77c7aoff|r"
         end
-        print(coloredName.." usage info:\n"..coloredCommand.."icon [number]:|r change size of icons (currently: |CFF9fd78a"..DCovenant["iconSize"].."|r)\n"..coloredCommand.."chat [on|off]:|r log a new character's covenant to chat (currently: "..currentChatOption..")\n"..coloredCommand.."log:|r print all collected data")
+        print(coloredName.." usage info:\n"..coloredCommand.."icon [number]:|r change size of icons (currently: |CFF9fd78a"..DCovenant["iconSize"].."|r)\n"..coloredCommand.."chat [on|off]:|r log a new character's covenant to chat (currently: "..currentChatOption..")\n"..coloredCommand.."log [all|group]:|r prints all collected data or just for your party/raid")
     end
 end
 SlashCmdList["DETAILSCOVENANT"] = commandLineHandler;

@@ -20,7 +20,7 @@ You can call help in game `/dc` or `/dcovenants`. And also subcommands:
 
  - `icon [number]` change size of icons
  - `chat [on|off]` log a new character's covenant to chat
- - `log` print all collected data
+ - `log [all|group]` prints all collected data or just for your party/raid
 
 ### Developer:
 

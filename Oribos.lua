@@ -80,6 +80,23 @@ function oribos:log()
     print(log)
 end
 
+function oribos:logParty()
+    local log = "|CFFe5a472Details_Covenants|r party covenants:"
+    local numGroupMembers = GetNumGroupMembers()
+
+    for groupindex = 1, numGroupMembers do
+        local name = GetRaidRosterInfo(groupindex)
+
+        local playerData = oribos.covenants[name]
+        if name and playerData then
+            local _, _, _, classColor = GetClassColor(playerData.class)
+            log = log.."\n    "..oribos:getCovenantIcon(playerData.covenantID).." |C"..classColor..name.."|r" 
+        end  
+    end
+
+    print(log)
+end
+
 
 -- Public 
 _G.Oribos = {}
