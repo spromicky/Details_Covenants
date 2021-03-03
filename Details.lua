@@ -7,7 +7,7 @@ function dc:replaceDetailsImplmentation()
             local covenantPrefix = ""
 
             if default == false then
-                local covenantPrefix = oribos:getCovenantIconForPlayer(playerName).." "
+                covenantPrefix = oribos:getCovenantIconForPlayer(playerName).." "
             end
 
             if (not silent) then

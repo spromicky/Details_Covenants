@@ -4,7 +4,6 @@ local coloredName = "|CFFe5a472Details_Covenants|r"
 SLASH_DETAILSCOVENANT1, SLASH_DETAILSCOVENANT2 = '/dc', '/dcovenants';
 local function commandLineHandler(msg, editBox)
     if string.match(msg, "icon ") then
-        print(msg)
         local _, numberValue = dc.utils:splitCommand(msg)
         if dc.utils:isNumeric(numberValue) then 
             local size = tonumber(numberValue)
