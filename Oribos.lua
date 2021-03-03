@@ -71,30 +71,29 @@ function oribos:isCovenantsEmpty()
 end
 
 function oribos:log()
-    local log = "|CFFe5a472Details_Covenants|r list of logged characters:"
+    print("|CFFe5a472Details_Covenants|r list of logged characters:")
+
     for key, data in pairs(oribos.covenants) do
         local _, _, _, classColor = GetClassColor(data.class)
-        log = log.."\n    "..oribos:getCovenantIcon(data.covenantID).." |C"..classColor..key.."|r"
+        print("    "..oribos:getCovenantIcon(data.covenantID).." |C"..classColor..key.."|r")
     end
-
-    print(log)
 end
 
 function oribos:logParty()
-    local log = "|CFFe5a472Details_Covenants|r party covenants:"
     local numGroupMembers = GetNumGroupMembers()
+    if numGroupMembers > 0 then 
+        print("|CFFe5a472Details_Covenants|r party covenants:")
 
-    for groupindex = 1, numGroupMembers do
-        local name = GetRaidRosterInfo(groupindex)
+        for groupindex = 1, numGroupMembers do
+            local name = GetRaidRosterInfo(groupindex)
 
-        local playerData = oribos.covenants[name]
-        if name and playerData then
-            local _, _, _, classColor = GetClassColor(playerData.class)
-            log = log.."\n    "..oribos:getCovenantIcon(playerData.covenantID).." |C"..classColor..name.."|r" 
-        end  
-    end
-
-    print(log)
+            local playerData = oribos.covenants[name]
+            if name and playerData then
+                local _, _, _, classColor = GetClassColor(playerData.class)
+                print("    "..oribos:getCovenantIcon(playerData.covenantID).." |C"..classColor..name.."|r")
+            end  
+        end
+    end 
 end
 
 

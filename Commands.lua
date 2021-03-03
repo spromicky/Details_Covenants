@@ -24,7 +24,7 @@ local function commandLineHandler(msg, editBox)
         print(coloredName.." chat logs is |CFFd77c7aoff|r")
     elseif msg == "log all" then
         dc.oribos:log()
-    elseif msg == "log group" then
+    elseif msg == "log group" or msg == "log" then
         dc.oribos:logParty()
     else 
         local coloredCommand = "  |CFFc0a7c7/dc|r |CFFf3ce87"
