@@ -3,8 +3,8 @@ local _, dc = ...
 dc.addonPrefix = "DCOribos"
 DCovenant = {
     ["iconSize"] = 16,
-    ["chat"] = true,
 }
+DCovenantLog = true
 
 local askMessage = "ASK"
 local isAsked = false

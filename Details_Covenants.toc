@@ -5,7 +5,7 @@
 ## Version: 1.0.0
 ## X-License: MIT
 ## X-Curse-Project-ID: 431558
-## SavedVariablesPerCharacter: DCovenant
+## SavedVariablesPerCharacter: DCovenant, DCovenantLog
 
 Utils.lua
 SpellIDs.lua

@@ -17,10 +17,10 @@ local function commandLineHandler(msg, editBox)
             print("|CFFd77c7aError:|r Please enter value between |CFF9fd78a10|r and |CFF9fd78a48|r") 
         end 
     elseif msg == "chat on" then
-        DCovenant["chat"] = true
+        DCovenantLog = true
         print(coloredName.." chat logs is |CFF9fd78aon|r")
     elseif msg == "chat off" then
-        DCovenant["chat"] = false
+        DCovenantLog = false
         print(coloredName.." chat logs is |CFFd77c7aoff|r")
     elseif msg == "log all" then
         dc.oribos:log()
@@ -30,7 +30,7 @@ local function commandLineHandler(msg, editBox)
         local coloredCommand = "  |CFFc0a7c7/dc|r |CFFf3ce87"
         local currentChatOption = ""
 
-        if DCovenant["chat"] == true then
+        if DCovenantLog == true then
             currentChatOption = "|CFF9fd78aon|r"
         else
             currentChatOption = "|CFFd77c7aoff|r"
