@@ -57,7 +57,6 @@ end
 function oribos:sendCovenantInfo(playerName)
     if playerName and oribos.covenants[playerName] then 
         local message = playerName..":"..oribos.covenants[playerName].covenantID..":"..oribos.covenants[playerName].class
-        C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "PARTY")
         C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "RAID")
     end 
 end

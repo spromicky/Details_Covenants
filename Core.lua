@@ -29,7 +29,6 @@ local function updateGroupRoster()
 
     if not isAsked and dc.oribos:isCovenantsEmpty() then
         isAsked = true
-        C_ChatInfo.SendAddonMessage(dc.addonPrefix, askMessage, "PARTY")
         C_ChatInfo.SendAddonMessage(dc.addonPrefix, askMessage, "RAID")
     end
 
@@ -76,8 +75,9 @@ local function eventHandler(self, event, ...)
         if prefix == dc.addonPrefix then
             if messageText == askMessage then
                 dc.oribos:sendCovenantInfo(playerName)
-            elseif dc.oribos:hasPlayerWithEmptyCovenant() then
+            else
                 local senderName, senderRealm = dc.utils:splitName(sender)
+
                 if senderName ~= playerName then
                     local name, covenantID, playerClass = dc.utils:splitMessage(messageText)
 
