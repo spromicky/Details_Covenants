@@ -76,18 +76,18 @@ function oribos:isCovenantsEmpty()
 end
 
 function oribos:log()
-    print("|CFFe5a472Details_Covenants|r list of logged characters:")
+    print("|CFFe5a472Details_Covenants|r List of logged characters:")
 
     for key, data in pairs(oribos.covenants) do
         local _, _, _, classColor = GetClassColor(data.class)
-        print("    "..oribos:getCovenantIcon(data.covenantID).." |C"..classColor..key.."|r")
+        print(oribos:getCovenantIcon(data.covenantID).." |C"..classColor..key.."|r")
     end
 end
 
 function oribos:logParty()
     local numGroupMembers = GetNumGroupMembers()
     if numGroupMembers > 0 then 
-        print("|CFFe5a472Details_Covenants|r party covenants:")
+        print("|CFFe5a472Details_Covenants|r Party covenants:")
 
         for groupindex = 1, numGroupMembers do
             local name = GetRaidRosterInfo(groupindex)
@@ -95,9 +95,11 @@ function oribos:logParty()
             local playerData = oribos.covenants[name]
             if name and playerData then
                 local _, _, _, classColor = GetClassColor(playerData.class)
-                print("    "..oribos:getCovenantIcon(playerData.covenantID).." |C"..classColor..name.."|r")
+                print(oribos:getCovenantIcon(playerData.covenantID).." |C"..classColor..name.."|r")
             end  
         end
+    else 
+        print("|CFFe5a472Details_Covenants|r You are not currently in group.")
     end 
 end
 
