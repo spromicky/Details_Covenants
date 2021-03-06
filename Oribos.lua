@@ -28,7 +28,7 @@ function oribos:fillCovenants()
     for groupindex = 1, numGroupMembers do
         local name = GetRaidRosterInfo(groupindex)
 
-        if name and not oribos.covenants[name] and oribos.emptyCovenants[name] then
+        if name and not oribos.covenants[name] and not oribos.emptyCovenants[name]then
             oribos.emptyCovenants[name] = 0
             oribos:askCovenantInfo(name)
         end
