@@ -4,6 +4,7 @@ dc.oribos = {}
 
 local oribos = dc.oribos
 local isEmpty = true
+local playerName = UnitName("player")
 oribos.emptyCovenants = {}
 oribos.covenants = {}
 
@@ -23,13 +24,13 @@ function oribos:getCovenantIcon(covenantID)
 end
 
 function oribos:fillCovenants()
-    oribos.emptyCovenants = {}
     local numGroupMembers = GetNumGroupMembers()
     for groupindex = 1, numGroupMembers do
         local name = GetRaidRosterInfo(groupindex)
 
-        if name and not oribos.covenants[name] then
+        if name and not oribos.covenants[name] and oribos.emptyCovenants[name] then
             oribos.emptyCovenants[name] = 0
+            oribos:askCovenantInfo(name)
         end
     end
 end
@@ -54,10 +55,15 @@ function oribos:addCovenantForPlayer(covenantID, playerName, playerClass)
     end
 end
 
-function oribos:sendCovenantInfo(playerName)
+function oribos:askCovenantInfo(playerName)
+    local message = dc.askMessage..":"..playerName
+    C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "WHISPER", playerName)
+end
+
+function oribos:sendCovenantInfo(playerName, toPlayerName)
     if playerName and oribos.covenants[playerName] then 
         local message = playerName..":"..oribos.covenants[playerName].covenantID..":"..oribos.covenants[playerName].class
-        C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "RAID")
+        C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "WISPER", toPlayerName)
     end 
 end
 
