@@ -4,7 +4,6 @@ dc.oribos = {}
 
 local oribos = dc.oribos
 local isEmpty = true
-local playerName = UnitName("player")
 oribos.emptyCovenants = {}
 oribos.covenants = {}
 
@@ -56,7 +55,7 @@ function oribos:addCovenantForPlayer(covenantID, playerName, playerClass)
 end
 
 function oribos:askCovenantInfo(playerName)
-    local message = dc.askMessage..":"..playerName
+    local message = dc.askMessage
     C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "WHISPER", playerName)
 end
 
