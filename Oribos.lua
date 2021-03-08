@@ -3,7 +3,6 @@ local _, dc = ...
 dc.oribos = {}
 
 local oribos = dc.oribos
-local isEmpty = true
 oribos.emptyCovenants = {}
 oribos.covenants = {}
 
@@ -37,7 +36,6 @@ end
 function oribos:addCovenantForPlayer(covenantID, playerName, playerClass)
     if covenantID then 
         if playerName ~= UnitName("player") then
-            isEmpty = false
 
             if DCovenantLog == true and not oribos.covenants[playerName] then 
                 local coloredName = "|CFFe5a472Details_Covenants|r"
@@ -70,9 +68,6 @@ function oribos:hasPlayerWithEmptyCovenant()
     return not dc.utils:isEmpty(oribos.emptyCovenants)
 end
 
-function oribos:isCovenantsEmpty()
-    return isEmpty
-end
 
 function oribos:log()
     print("|CFFe5a472Details_Covenants|r List of logged characters:")
