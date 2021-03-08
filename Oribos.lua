@@ -55,14 +55,14 @@ function oribos:addCovenantForPlayer(covenantID, playerName, playerClass)
 end
 
 function oribos:askCovenantInfo(playerName)
-    local message = dc.askMessage
-    C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "WHISPER", playerName)
+    local message = dc.askMessage..":"..playerName
+    C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "RAID")
 end
 
-function oribos:sendCovenantInfo(playerName, toPlayerName)
+function oribos:sendCovenantInfo(playerName)
     if playerName and oribos.covenants[playerName] then 
         local message = playerName..":"..oribos.covenants[playerName].covenantID..":"..oribos.covenants[playerName].class
-        C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "WISPER", toPlayerName)
+        C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "RAID")
     end 
 end
 

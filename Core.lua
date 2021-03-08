@@ -67,15 +67,16 @@ local function eventHandler(self, event, ...)
         local prefix, messageText, _, sender = ...
 
         if prefix == dc.addonPrefix then
-            local senderName, senderRealm = dc.utils:splitName(sender)
 
             if string.match(messageText, dc.askMessage) then
-                if realmName ~= senderRealm then
-                    senderName = sender
-                end
-                dc.oribos:sendCovenantInfo(playerName, senderName)
-            else
+                local _, askForName = dc.utils:splitMessage(messageText)
+
+                if string.match(askForName, playerName) then 
+                    dc.oribos:sendCovenantInfo(playerName)
+                end 
+            elseif dc.oribos:hasPlayerWithEmptyCovenant() then
                 if senderName ~= playerName then
+                    local senderName, senderRealm = dc.utils:splitName(sender)
                     local name, covenantID, playerClass = dc.utils:splitMessage(messageText)
 
                     if realmName ~= senderRealm then

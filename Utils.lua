@@ -35,6 +35,11 @@ function utils:splitMessage(msg)
     return result[1], result[2], result[3]
 end
 
+function utils:splitAskMessage(msg)
+    local result = utils:split(msg, ':')
+    return result[1], result[2]
+end
+
 function utils:splitCommand(msg)
     local result = utils:split(msg, ' ')
     return result[1], result[2]
