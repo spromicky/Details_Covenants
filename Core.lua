@@ -86,7 +86,7 @@ local function eventHandler(self, event, ...)
                         name = name.."-"..senderRealm
                     end
 
-                    dc.oribos:logNewPlayer(covenantIDByUtility, sourceName, englishClass, nil, "DC")
+                    dc.oribos:logNewPlayer(covenantIDByUtility, sourceName, englishClass)
                     dc.oribos:addCovenantForPlayer(tonumber(covenantID), name, playerClass)
                 end
             end
