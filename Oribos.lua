@@ -35,15 +35,6 @@ end
 
 function oribos:addCovenantForPlayer(covenantID, playerName, playerClass)
     if covenantID then 
-        if playerName ~= UnitName("player") then
-
-            if DCovenantLog == true and not oribos.covenants[playerName] then 
-                local coloredName = "|CFFe5a472Details_Covenants|r"
-                local _, _, _, classColor = GetClassColor(playerClass)
-                print(coloredName.." covenant defined: "..oribos:getCovenantIcon(covenantID).." |C"..classColor..playerName.."|r")
-            end
-        end
-
         local playerData = {}
         playerData.covenantID = covenantID
         playerData.class = playerClass
@@ -68,6 +59,23 @@ function oribos:hasPlayerWithEmptyCovenant()
     return not dc.utils:isEmpty(oribos.emptyCovenants)
 end
 
+-- Loggers
+function oribos:logNewPlayer(covenantID, playerName, playerClass, spellID, addon)
+    if DCovenantLog == true and covenantID and playerName ~= UnitName("player") and not oribos.covenants[playerName] then
+        local coloredName = "|CFFe5a472Details_Covenants|r"
+        local _, _, _, classColor = GetClassColor(playerClass)
+        local byMessage = ""
+
+        if spellID then
+            local link = GetSpellLink(spellID)
+            byMessage = "by spell: "..link
+        elseif addon then
+            byMessage = "by addon: |CFFe5a472"..addon.."|r"
+        end
+
+        print(coloredName.." covenant defined: "..oribos:getCovenantIcon(covenantID).." |C"..classColor..playerName.."|r".."("..byMessage..")")
+    end
+end
 
 function oribos:log()
     print("|CFFe5a472Details_Covenants|r List of logged characters:")

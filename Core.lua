@@ -55,7 +55,10 @@ local function eventHandler(self, event, ...)
                     local covenantIDByAbility = classAbilityMap[spellID]
                     local covenantIDByUtility = dc.spellMaps.utilityMap[spellID]
 
+                    dc.oribos:logNewPlayer(covenantIDByAbility, sourceName, englishClass, spellID)
                     dc.oribos:addCovenantForPlayer(covenantIDByAbility, sourceName, englishClass)
+
+                    dc.oribos:logNewPlayer(covenantIDByUtility, sourceName, englishClass, spellID)
                     dc.oribos:addCovenantForPlayer(covenantIDByUtility, sourceName, englishClass)
                     registerCombatEvent()
                 end
@@ -83,6 +86,7 @@ local function eventHandler(self, event, ...)
                         name = name.."-"..senderRealm
                     end
 
+                    dc.oribos:logNewPlayer(covenantIDByUtility, sourceName, englishClass, nil, "DC")
                     dc.oribos:addCovenantForPlayer(tonumber(covenantID), name, playerClass)
                 end
             end
