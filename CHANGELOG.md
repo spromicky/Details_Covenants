@@ -1,6 +1,6 @@
 ##### v1.1.0
     
- - add option to align icon [#8](https://github.com/spromicky/Details_Covenants/issues/8)
+ - add option to align covenant icon [#8](https://github.com/spromicky/Details_Covenants/issues/8). Now you can choose on which side of name covenant icon will be show.
  - update checking for own messages
  - update `.toc` for 9.1
 
