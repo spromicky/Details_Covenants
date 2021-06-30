@@ -1,3 +1,9 @@
+##### v1.1.0
+    
+ - add option to align icon [#8](https://github.com/spromicky/Details_Covenants/issues/8)
+ - update checking for own messages
+ - update `.toc` for 9.1
+
 ##### v1.0.0
 
  - other addons can acdess to covenants info (`_G.Oribos:getCovenantIconForPlayer(<playerName>)`)
