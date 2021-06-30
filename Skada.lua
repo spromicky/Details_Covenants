@@ -8,9 +8,9 @@ function dc:replaceSkadaImplmentation()
             local covenantSuffix = ""
 
             if DCovenant["iconAlign"] == "right" then
-                covenantSuffix = " "..oribos:getCovenantIconForPlayer(playerName)
+                covenantSuffix = " "..oribos:getCovenantIconForPlayer(playername)
             else 
-                covenantPrefix = oribos:getCovenantIconForPlayer(playerName).." "
+                covenantPrefix = oribos:getCovenantIconForPlayer(playername).." "
             end 
             
             -- Add player to set if it does not exist.
