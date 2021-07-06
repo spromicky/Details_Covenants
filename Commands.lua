@@ -39,31 +39,40 @@ local function commandLineHandler(msg, editBox)
         else 
             print("|CFFd77c7aError:|r Please enter one of value |CFF9fd78aleft|r or |CFF9fd78aright|r") 
         end
-    elseif string.match(msg, "ignore") then
-        local _, ignoreValue = dc.utils:splitCommand(msg)
-        if ignoreValue == "on" or ignoreValue == "off" then
-            if ignoreValue == "on" then
-                _G._detalhes.ignore_nicktag = false
-                DCovenant["detailsIgnoreNickname"] = true
-            else 
-                DCovenant["detailsIgnoreNickname"] = false
-            end
+    elseif string.match(msg, "ignore") then 
+        if _G._detalhes then
+            local _, ignoreValue = dc.utils:splitCommand(msg)
+            if ignoreValue == "on" or ignoreValue == "off" then
+                if ignoreValue == "on" then
+                    _G._detalhes.ignore_nicktag = false
+                    DCovenant["detailsIgnoreNickname"] = true
+                else 
+                    DCovenant["detailsIgnoreNickname"] = false
+                end
 
-            print(coloredName.." Details! nicknames ignore is "..colorOption(DCovenant["detailsIgnoreNickname"]))
+                print(coloredName.." Details! nicknames ignore is "..colorOption(DCovenant["detailsIgnoreNickname"]))
+            else 
+                print("|CFFd77c7aError:|r Please enter one of value "..colorOption(true).." or "..colorOption(false)) 
+            end
         else 
-            print("|CFFd77c7aError:|r Please enter one of value "..colorOption(true).." or "..colorOption(false)) 
+            print("|CFFd77c7aError:|r You don't have Details!")
         end
     else 
         local coloredCommand = "  |CFFc0a7c7/dc|r |CFFf3ce87"
         local currentChatOption = colorOption(DCovenantLog)
         local currentAlignOption = DCovenant["iconAlign"]
-        local currentNicknameOption = colorOption(DCovenant["detailsIgnoreNickname"])
 
         if not currentAlignOption then
             currentAlignOption = "left"
         end  
 
-        print(coloredName.." usage info:\n"..coloredCommand.."icon [number]:|r change size of icons (currently: |CFF9fd78a"..DCovenant["iconSize"].."|r)\n"..coloredCommand.."chat [on | off]:|r log a new character's covenant to chat (currently: "..currentChatOption..")\n"..coloredCommand.."log [all | group]:|r prints all collected data or just for your party/raid".."\n"..coloredCommand.."align [left | right]:|r change align of covenant icon (currently: |CFF9fd78a"..currentAlignOption.."|r)".."\n"..coloredCommand.."ignore [on | off]:|r ignore Details! nicknames (currently: "..currentNicknameOption..")")
+        local ignoreCommand = ""
+        if _G._detalhes then
+            local currentNicknameOption = colorOption(DCovenant["detailsIgnoreNickname"])
+            ignoreCommand = "\n"..coloredCommand.."ignore [on | off]:|r ignore Details! nicknames (currently: "..currentNicknameOption..")"
+        end 
+
+        print(coloredName.." usage info:\n"..coloredCommand.."icon [number]:|r change size of icons (currently: |CFF9fd78a"..DCovenant["iconSize"].."|r)\n"..coloredCommand.."chat [on | off]:|r log a new character's covenant to chat (currently: "..currentChatOption..")\n"..coloredCommand.."log [all | group]:|r prints all collected data or just for your party/raid".."\n"..coloredCommand.."align [left | right]:|r change align of covenant icon (currently: |CFF9fd78a"..currentAlignOption.."|r)"..ignoreCommand)
     end
 end
 SlashCmdList["DETAILSCOVENANT"] = commandLineHandler;

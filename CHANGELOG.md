@@ -1,3 +1,7 @@
+##### v1.2.1 Fix errors in Skada
+
+- fix [#9](https://github.com/spromicky/Details_Covenants/issues/9) errors for Skada
+
 ##### v1.2.0 Ignore nickmames in Details!
 
 - now you can ignore nicknames from Details. Use command `/dc ignore on` [#6](https://github.com/spromicky/Details_Covenants/issues/6)

@@ -1,15 +1,13 @@
 local _, dc = ...
 local oribos = _G.Oribos
 local detalhes = _G._detalhes
-local old_ignore_nicktag = detalhes.ignore_nicktag
 
 function dc:replaceDetailsImplmentation()
-    if DCovenant["detailsIgnoreNickname"] == true then
-        detalhes.ignore_nicktag = false
-    end
-
-
     if _G.NickTag and detalhes then
+        if DCovenant["detailsIgnoreNickname"] == true then
+            detalhes.ignore_nicktag = false
+        end
+        
         detalhes.GetNickname = function(self, playerName, default, silent)
             local covenantPrefix = ""
             local covenantSuffix = ""
