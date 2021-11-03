@@ -26,7 +26,7 @@ function oribos:fillCovenants()
     for groupindex = 1, numGroupMembers do
         local name = GetRaidRosterInfo(groupindex)
 
-        if name and not oribos.covenants[name] and not oribos.emptyCovenants[name]then
+        if name and not oribos.covenants[name] and not oribos.emptyCovenants[name] then
             oribos.emptyCovenants[name] = 0
             oribos:askCovenantInfo(name)
         end
@@ -61,7 +61,7 @@ end
 
 -- Loggers
 function oribos:logNewPlayer(covenantID, playerName, playerClass, spellID)
-    if DCovenantLog and covenantID and playerName ~= UnitName("player") and not oribos.covenants[playerName] then
+    if DCovenantLog and covenantID and playerName ~= UnitName("player") and (not oribos.covenants[playerName] or oribos.covenants[playerName].covenantID ~= covenantID) then
         local coloredName = "|CFFe5a472Details_Covenants|r"
         local _, _, _, classColor = GetClassColor(playerClass)
         local byMessage = ""
