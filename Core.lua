@@ -17,9 +17,7 @@ frame:RegisterEvent("PLAYER_ENTERING_WORLD");
 
 
 local function init()
-    local _, playerClass = UnitClass("player")
     realmName = GetNormalizedRealmName()
-    dc.oribos:addCovenantForPlayer(C_Covenants.GetActiveCovenantID(), UnitName("player"), playerClass)
 
     frame:RegisterEvent("GROUP_ROSTER_UPDATE");
     frame:RegisterEvent("CHAT_MSG_ADDON")

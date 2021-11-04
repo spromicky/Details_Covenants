@@ -6,6 +6,8 @@ local oribos = dc.oribos
 oribos.emptyCovenants = {}
 oribos.covenants = {}
 
+local _, ownClass = UnitClass("player")
+
 function oribos:getCovenantIcon(covenantID)
     if covenantID > 0 and covenantID < 5 then
         local covenantMap = {
@@ -49,10 +51,15 @@ function oribos:askCovenantInfo(playerName)
 end
 
 function oribos:sendCovenantInfo(playerName)
-    if playerName and oribos.covenants[playerName] then 
-        local message = playerName..":"..oribos.covenants[playerName].covenantID..":"..oribos.covenants[playerName].class
-        C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "RAID")
-    end 
+    if playerName then 
+        if playerName == UnitName("player") then
+            local message = playerName..":"..C_Covenants.GetActiveCovenantID()..":"..ownClass
+            C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "RAID")
+        elseif oribos.covenants[playerName] then
+            local message = playerName..":"..oribos.covenants[playerName].covenantID..":"..oribos.covenants[playerName].class
+            C_ChatInfo.SendAddonMessage(dc.addonPrefix, message, "RAID")
+        end 
+    end
 end
 
 function oribos:hasPlayerWithEmptyCovenant()
@@ -109,11 +116,19 @@ _G.Oribos = {}
 local publicOribos = _G.Oribos
 
 function publicOribos:getCovenantIconForPlayer(playerName)
-    local covenantData = oribos.covenants[playerName]
+    local covenantID = 0
 
-    if covenantData and covenantData.covenantID then
-        return oribos:getCovenantIcon(covenantData.covenantID)
-    else
-        return ""
-    end 
+    if playerName == UnitName("player") then
+        covenantID = C_Covenants.GetActiveCovenantID()
+    else 
+        local covenantData = oribos.covenants[playerName]
+
+        if covenantData and covenantData.covenantID then
+            covenantID = covenantData.covenantID
+        else
+            return ""
+        end 
+    end
+
+    return oribos:getCovenantIcon(covenantID)
 end
