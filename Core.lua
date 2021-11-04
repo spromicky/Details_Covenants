@@ -20,6 +20,8 @@ local function init()
     frame:RegisterEvent("GROUP_ROSTER_UPDATE");
     frame:RegisterEvent("CHAT_MSG_ADDON")
     C_ChatInfo.RegisterAddonMessagePrefix(dc.addonPrefix)
+
+    dc.oribos:fillCovenants()
     frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 end
 
@@ -28,20 +30,22 @@ local function eventHandler(self, event, ...)
     if event == "COMBAT_LOG_EVENT_UNFILTERED" then
         local _, subevent, _, sourceGUID, sourceName = CombatLogGetCurrentEventInfo()
 
-        if subevent == "SPELL_CAST_SUCCESS" and dc.utils:isValidGUID(sourceGUID) then
-            local _, englishClass = GetPlayerInfoByGUID(sourceGUID)
-            local classAbilityMap = dc.spellMaps.abilityMap[englishClass]
+        if dc.oribos.emptyCovenants[sourceName] or dc.oribos.covenants[sourceName] then
+            if subevent == "SPELL_CAST_SUCCESS" and dc.utils:isValidGUID(sourceGUID) then
+                local _, englishClass = GetPlayerInfoByGUID(sourceGUID)
+                local classAbilityMap = dc.spellMaps.abilityMap[englishClass]
 
-            if classAbilityMap then
-                local spellID = select(12, CombatLogGetCurrentEventInfo())
-                local covenantIDByAbility = classAbilityMap[spellID]
-                local covenantIDByUtility = dc.spellMaps.utilityMap[spellID]
+                if classAbilityMap then
+                    local spellID = select(12, CombatLogGetCurrentEventInfo())
+                    local covenantIDByAbility = classAbilityMap[spellID]
+                    local covenantIDByUtility = dc.spellMaps.utilityMap[spellID]
 
-                dc.oribos:logNewPlayer(covenantIDByAbility, sourceName, englishClass, spellID)
-                dc.oribos:addCovenantForPlayer(covenantIDByAbility, sourceName, englishClass)
+                    dc.oribos:logNewPlayer(covenantIDByAbility, sourceName, englishClass, spellID)
+                    dc.oribos:addCovenantForPlayer(covenantIDByAbility, sourceName, englishClass)
 
-                dc.oribos:logNewPlayer(covenantIDByUtility, sourceName, englishClass, spellID)
-                dc.oribos:addCovenantForPlayer(covenantIDByUtility, sourceName, englishClass)
+                    dc.oribos:logNewPlayer(covenantIDByUtility, sourceName, englishClass, spellID)
+                    dc.oribos:addCovenantForPlayer(covenantIDByUtility, sourceName, englishClass)
+                end
             end
         end
     elseif event == "GROUP_ROSTER_UPDATE" then
