@@ -7,8 +7,6 @@ DCovenant = {
 }
 DCovenantLog = true
 
-local isAsked = false
-
 local playerName = UnitName("player")
 local realmName = ""
 
@@ -25,6 +23,7 @@ local function init()
     frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 end
 
+---@diagnostic disable-next-line: unused-local
 local function eventHandler(self, event, ...)
     if event == "COMBAT_LOG_EVENT_UNFILTERED" then
         local _, subevent, _, sourceGUID, sourceName = CombatLogGetCurrentEventInfo()
@@ -54,9 +53,9 @@ local function eventHandler(self, event, ...)
             if string.match(messageText, dc.askMessage) then
                 local _, askForName = dc.utils:splitMessage(messageText)
 
-                if string.match(askForName, playerName) then 
+                if string.match(askForName, playerName) then
                     dc.oribos:sendCovenantInfo(playerName)
-                end 
+                end
             elseif dc.oribos:hasPlayerWithEmptyCovenant() then
                 local senderName, senderRealm = dc.utils:splitName(sender)
                 if senderName ~= playerName then

@@ -28,7 +28,7 @@ end
 function utils:splitName(name)
     local result = utils:split(name, '-')
     return result[1], result[2]
-end 
+end
 
 function utils:splitMessage(msg)
     local result = utils:split(msg, ':')
