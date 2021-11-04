@@ -1,3 +1,12 @@
+##### v1.3.2 Make covenant detection less aggressive
+
+- make covenant detection less aggressive, now track only players in group
+
+##### v1.3.1 Fix error with wrong GUID
+
+- check is GUID is a player GUID
+- send and show always correct info about your own covenant
+
 ##### v1.3.0 New covenant swap system
 
 - remove caching for detected covenants, because of new covenant swap system
