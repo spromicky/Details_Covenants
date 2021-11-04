@@ -31,7 +31,7 @@ local function eventHandler(self, event, ...)
     if event == "COMBAT_LOG_EVENT_UNFILTERED" then
         local _, subevent, _, sourceGUID, sourceName = CombatLogGetCurrentEventInfo()
 
-        if subevent == "SPELL_CAST_SUCCESS" then
+        if subevent == "SPELL_CAST_SUCCESS" and dc.utils:isValidGUID(sourceGUID) then
             local _, englishClass = GetPlayerInfoByGUID(sourceGUID)
             local classAbilityMap = dc.spellMaps.abilityMap[englishClass]
 
