@@ -47,7 +47,8 @@ end
 
 function utils:isValidGUID(guid) 
     if guid then
-        local unitType = strsplit("-", guid)
-        return unitType == "Player"
-    end    
-end 
+        local unitType = utils:split(guid, '-')
+        return unitType[1] == "Player"
+    end
+    return false
+end
