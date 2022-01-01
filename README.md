@@ -1,6 +1,9 @@
 # Details!|Skada Covenants
 
-Plugin for **Details!** and **Skada**, that show covenant icon near player name. [CurseForge page](https://www.curseforge.com/wow/addons/details-covenants)
+Plugin for **Details!** and **Skada**, that show covenant icon near player name. 
+
+ - [CurseForge](https://www.curseforge.com/wow/addons/details-covenants)
+ - [wago.io](https://addons.wago.io/addons/details-covenants)
 
 ![](resources/screenshot.png)
 
